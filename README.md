@@ -80,6 +80,10 @@ Una prueba con PowerShell sobre Linux no equivale a una prueba real en Windows.
 
 ## Verificación real (1 de octubre de 2026)
 
-Se verificaron Git, Python 3 y Docker Engine 29.1.3 no rootless. No hay `pwsh` local. Bash pasó la revisión sintáctica y rechazó sin argumento, `abc`, `0`, `65536` y argumentos extra. La construcción instaló netcat-openbsd y copió el script, pero agotó tiempos de espera al finalizar con el driver `vfs`; todavía falta comprobar la imagen final y ABIERTO/CERRADO en Docker. La imagen oficial de PowerShell comenzó a descargar sus capas, pero tampoco terminó dentro de dos intentos limitados. Por tanto, falta ejecutar PowerShell tanto en Linux como en Windows; no se presentan esas pruebas como aprobadas.
+Se verificaron Git, Python 3 y Docker Engine 29.1.3 no rootless. Tras varios tiempos de espera con el driver `vfs`, la construcción de `practica-puertos` terminó correctamente. Con un servidor temporal iniciado mediante `python3 -m http.server 8000 --bind 127.0.0.1`, Bash en Docker con `--network host` devolvió ABIERTO y código 0 para `8000` y `0008000`. Después de detener únicamente ese servidor, devolvió CERRADO y código 1 para el mismo puerto.
+
+Dentro de la imagen también se verificaron sin argumento, `abc`, `0`, `65536`, argumentos extra y dependencia `nc` ausente: todos devolvieron 2. Bash pasó la revisión sintáctica; las pruebas directas sobre Mint también aprobaron estos casos y múltiples ceros iniciales. No quedó el servidor temporal en ejecución.
+
+No hay `pwsh` local. Se intentó descargar la imagen oficial `mcr.microsoft.com/powershell:7.4-ubuntu-22.04`; la etiqueta fue aceptada y una capa terminó de descargarse, pero la descarga completa agotó los tiempos de espera. Por tanto, falta ejecutar PowerShell tanto en Linux como en Windows; no se presentan esas pruebas como aprobadas.
 
 Subir este repositorio a GitHub no entrega automáticamente el enlace al profesor: el alumno debe enviarlo personalmente.
